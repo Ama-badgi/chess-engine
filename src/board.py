@@ -34,8 +34,6 @@ PIECE_LOOKUP_TABLE = {
     "♞": ColoredPiece(GamePiece.KNIGHT, Color.BLACK),
     "♝": ColoredPiece(GamePiece.BISHOP, Color.BLACK)
 }
-
-
 VALUE_LOOKUP_TABLE = {
     GamePiece.PAWN: 1,
     GamePiece.KING: 200,
@@ -44,8 +42,6 @@ VALUE_LOOKUP_TABLE = {
     GamePiece.KNIGHT: 3,
     GamePiece.BISHOP: 3 
 }
-
-
 LOWER_A_ASCII_OFFSET = ord("a")
 
 
@@ -59,7 +55,6 @@ class Board:
         split_pieces = text.split(",")
         for piece in split_pieces:
             self.board[int(piece[2]) - 1][ord(piece[1]) - LOWER_A_ASCII_OFFSET] = PIECE_LOOKUP_TABLE.get(piece[0])
-
 
     def evaluate(self) -> tuple[int, int]:
         white_count = 0
