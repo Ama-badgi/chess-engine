@@ -20,7 +20,7 @@ class ColoredPiece:
         self.color = color
 
 
-PIECE_LOOKUP_TABLE = {
+PIECE_MAP = {
     "♙": ColoredPiece(GamePiece.PAWN, Color.WHITE),
     "♔": ColoredPiece(GamePiece.KING, Color.WHITE),
     "♕": ColoredPiece(GamePiece.QUEEN, Color.WHITE),
@@ -34,7 +34,8 @@ PIECE_LOOKUP_TABLE = {
     "♞": ColoredPiece(GamePiece.KNIGHT, Color.BLACK),
     "♝": ColoredPiece(GamePiece.BISHOP, Color.BLACK)
 }
-VALUE_LOOKUP_TABLE = {
+
+VALUE_MAP = {
     GamePiece.PAWN: 1,
     GamePiece.KING: 200,
     GamePiece.QUEEN: 9,
@@ -42,6 +43,7 @@ VALUE_LOOKUP_TABLE = {
     GamePiece.KNIGHT: 3,
     GamePiece.BISHOP: 3 
 }
+
 LOWER_A_ASCII_OFFSET = ord("a")
 
 
@@ -54,7 +56,7 @@ class Board:
             text = csv.read()
         split_pieces = text.split(",")
         for piece in split_pieces:
-            self.board[int(piece[2]) - 1][ord(piece[1]) - LOWER_A_ASCII_OFFSET] = PIECE_LOOKUP_TABLE.get(piece[0])
+            self.board[int(piece[2]) - 1][ord(piece[1]) - LOWER_A_ASCII_OFFSET] = PIECE_MAP.get(piece[0])
 
     def evaluate(self) -> tuple[int, int]:
         white_count = 0
@@ -65,7 +67,7 @@ class Board:
                 if curr_piece is None:
                     pass
                 elif curr_piece.color == Color.WHITE:
-                    white_count += VALUE_LOOKUP_TABLE.get(curr_piece.piece)
+                    white_count += VALUE_MAP.get(curr_piece.piece)
                 else:
-                    black_count += VALUE_LOOKUP_TABLE.get(curr_piece.piece)
+                    black_count += VALUE_MAP.get(curr_piece.piece)
         return white_count, black_count
