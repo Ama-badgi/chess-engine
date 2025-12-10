@@ -48,8 +48,17 @@ LOWER_A_ASCII_OFFSET = ord("a")
 
 
 class Board:
-    def __init__(self):
+    """
+    Class to represent the board of the game
+
+    board: list[list[ColoredPiece | None]] -> matrix representation of the current board state
+    player_color: Color -> color of the player being controlled
+    weights: list[list[int]] -> weights representing board control
+    """
+    def __init__(self, player_color):
         self.board: list[list[ColoredPiece | None]] = [[None for _ in range(8)] for _ in range(8)]
+        self.player_color: Color = player_color
+        self.weights: list[list[int]] = [[1 for _ in range(8)] for _ in range(8)]
     
     def deserialize(self, board_path: str) -> None:
         with open(board_path, mode="r", encoding="utf-8") as csv:
@@ -57,6 +66,9 @@ class Board:
         split_pieces = text.split(",")
         for piece in split_pieces:
             self.board[int(piece[2]) - 1][ord(piece[1]) - LOWER_A_ASCII_OFFSET] = PIECE_MAP.get(piece[0])
+    
+    def place_piece(piece: ColoredPiece, position: tuple[int, int]) -> None:
+        pass
 
     def evaluate(self) -> tuple[int, int]:
         white_count = 0
