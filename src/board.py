@@ -55,8 +55,9 @@ class Board:
     player_color: Color -> color of the player being controlled
     weights: list[list[int]] -> weights representing board control
     """
-    def __init__(self, player_color):
-        self.board: list[list[ColoredPiece | None]] = [[None for _ in range(8)] for _ in range(8)]
+    def __init__(self, player_color,
+                 board: list[list[ColoredPiece | None]]=[[None for _ in range(8)] for _ in range(8)]):
+        self.board: list[list[ColoredPiece | None]] = board
         self.player_color: Color = player_color
         self.weights: list[list[int]] = [[1 for _ in range(8)] for _ in range(8)]
     
@@ -66,20 +67,3 @@ class Board:
         split_pieces = text.split(",")
         for piece in split_pieces:
             self.board[int(piece[2]) - 1][ord(piece[1]) - LOWER_A_ASCII_OFFSET] = PIECE_MAP.get(piece[0])
-    
-    def place_piece(piece: ColoredPiece, position: tuple[int, int]) -> None:
-        pass
-
-    def evaluate(self) -> tuple[int, int]:
-        white_count = 0
-        black_count = 0
-        for x in range(8):
-            for y in range(8):
-                curr_piece = self.board[x][y]
-                if curr_piece is None:
-                    pass
-                elif curr_piece.color == Color.WHITE:
-                    white_count += VALUE_MAP.get(curr_piece.piece)
-                else:
-                    black_count += VALUE_MAP.get(curr_piece.piece)
-        return white_count, black_count
