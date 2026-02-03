@@ -1,0 +1,49 @@
+skinparam linestyle ortho
+top to bottom direction
+
+@startuml chess_engine_class
+
+class Board {
+  + player_color: Color
+  + weights: list[list[int]]
+  ---
+  + __init__(player_color: Color, board: list[list[ColoredPiece | None]])
+  + deserialize(board_path: str)
+}
+
+enum GamePiece {
+  PAWN
+  KNIGHT
+  BISHOP
+  ROOK
+  QUEEN
+  KING
+}
+
+enum Color {
+  WHITE
+  BLACK
+}
+
+class ColoredPiece {
+  + piece: GamePiece
+  + color: Color
+  ---
+  + __init__(piece: GamePiece, color: Color)
+}
+
+class MiniMaxTree {
+  ---
+  + __init__(root: TreeNode)
+}
+
+class TreeNode {
+  
+}
+
+TreeNode *-- TreeNode
+MiniMaxTree *-- TreeNode
+TreeNode o-- Board
+Board o-- Piece
+
+@enduml
