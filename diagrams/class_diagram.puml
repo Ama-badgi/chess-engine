@@ -41,6 +41,7 @@ class Board {
   + void placePiece(GamePiece piece, Coordinates coordinates)
   + void makeMove(Coordinates startCoordinates, Coordinates targetCoordinates)
   - Collection<Coordinates> getValidatePieceMove(GamePiece piece, Coordinates targetCoordinates)
+  + int calculateScore(Color player)
 }
 
 class Coordinates <<record>> {
@@ -57,8 +58,8 @@ enum Color {
 
 interface GamePiece {
   ---
-  + GamePiece()
   + Coordinates getNextMove()
+  + Color getBoard()
 }
 
 together {
