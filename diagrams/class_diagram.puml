@@ -1,23 +1,53 @@
-skinparam linestyle ortho
-top to bottom direction
+@startuml chessEngineDesignClassDiagram
 
-@startuml chess_engine_class
+skinparam linetype ortho
+skinparam groupInheritance 2
+left to right direction
 
-class Board {
-  + player_color: Color
-  + weights: list[list[int]]
+class ChessBot {
+  - MiniMaxTree processingUnit
   ---
-  + __init__(player_color: Color, board: list[list[ColoredPiece | None]])
-  + deserialize(board_path: str)
+  + ChessBot()
 }
 
-enum GamePiece {
-  PAWN
-  KNIGHT
-  BISHOP
-  ROOK
-  QUEEN
-  KING
+class MiniMaxTree {
+  - TreeNode root
+  ---
+  + MiniMaxTree(Board board)
+  + int alphaBeta(TreeNode node, int alpha, int beta)
+}
+
+class TreeNode {
+  - int value
+  - Board board
+  - TreeNode parent
+  - TreeNode firstChild
+  - TreeNode nextSibling
+  ---
+  + TreeNode(Board board)
+  + int getValue()
+  + Board getBoard()
+  + TreeNode getParent()
+  + TreeNode getFirstChild()
+  + TreeNode getNextSibling()
+}
+
+class Board {
+  - Color playerTurn
+  - int[8][8] weights
+  ---
+  + Board(Optional<GamePiece>[8][8] board, Color playerTurn)
+  + void deserialize(String boardPath)
+  + void placePiece(GamePiece piece, Coordinates coordinates)
+  + void makeMove(Coordinates startCoordinates, Coordinates targetCoordinates)
+  - Collection<Coordinates> getValidatePieceMove(GamePiece piece, Coordinates targetCoordinates)
+}
+
+class Coordinates <<record>> {
+  - int xCoordinate
+  - int yCoordinate
+  ---
+  + Coordinates(int x, int y)
 }
 
 enum Color {
@@ -25,25 +55,56 @@ enum Color {
   BLACK
 }
 
-class ColoredPiece {
-  + piece: GamePiece
-  + color: Color
+interface GamePiece {
   ---
-  + __init__(piece: GamePiece, color: Color)
+  + GamePiece()
+  + Coordinates getNextMove()
 }
 
-class MiniMaxTree {
-  ---
-  + __init__(root: TreeNode)
+together {
+  class Pawn {
+    - Coordinates moves
+    - Color color
+  }
+  class Rook {
+    - Coordinates moves
+    - Color color
+  }
+  class Bishop {
+    - Coordinates moves
+    - Color color
+  }
+  class Knight {
+    - Coordinates moves
+    - Color color
+  }
+  class Queen {
+    - Coordinates moves
+    - Color color
+  }
+  class King {
+    - Coordinates moves
+    - Color color
+  }
 }
 
-class TreeNode {
-  
-}
+Board -[hidden]right- GamePiece
+'GamePiece -[hidden]right- Color
 
-TreeNode *-- TreeNode
-MiniMaxTree *-- TreeNode
-TreeNode o-- Board
-Board o-- Piece
+ChessBot    *--   MiniMaxTree
+MiniMaxTree *--   TreeNode
+TreeNode    *--   TreeNode
+TreeNode    *--   Board
+Board       *--   GamePiece
+
+Pawn        ..|>  GamePiece
+Rook        ..|>  GamePiece
+Bishop      ..|>  GamePiece
+Queen       ..|>  GamePiece
+King        ..|>  GamePiece
+Knight      ..|>  GamePiece
+
+Color       <-    GamePiece
+GamePiece   ->    Coordinates
 
 @enduml
